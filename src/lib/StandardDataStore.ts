@@ -40,7 +40,7 @@ class DatastoreEntry<T> {
         });
 
         if (!response.ok) {
-            return null;
+            return undefined;
         }
 
         return new DatastoreEntry(this.context, data);
@@ -78,7 +78,7 @@ class DatastoreEntry<T> {
 
         const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
-            return null;
+            return undefined;
         }
 
         const json: T = await response.json();
@@ -98,7 +98,7 @@ class DatastoreEntry<T> {
         const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
             console.log(`${response.status} - Unable to fetch entry versions.`);
-            return null;
+            return undefined;
         }
 
         const json: ListEntryVersions = await response.json();
@@ -134,7 +134,7 @@ export class StandardDataStore {
         const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
         if (!response.ok) {
             console.log(`${response.status} - Unable to list data stores for ${this.universeId}.`);
-            return null;
+            return undefined;
         }
 
         const json: ListDatastores = await response.json();
@@ -191,7 +191,7 @@ export class StandardDataStore {
                 return undefined;
             default:
                 console.log(`${response.status} - Unable to fetch this entry.`);
-                return null;
+                return undefined;
         }
     }
 }
