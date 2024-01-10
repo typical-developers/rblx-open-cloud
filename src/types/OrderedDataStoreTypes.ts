@@ -1,3 +1,9 @@
+export interface OrderedDataStoreContext {
+    url: URL,
+    base: URL,
+    apiKey: string
+}
+
 export interface Entry {
     /** The resource path of the request. */
     path: string,
@@ -14,6 +20,20 @@ export interface ListEntries {
     nextPageCursor: string
 }
 
+export interface CreateEntryRequest {
+    /**
+     * The value to set the new entry. If the input value exceeds the maximum value supported by int64, which is 9,223,372,036,854,775,807, the request fails with a 400 Bad Request error.
+     */
+    value: number
+}
+
+export interface UpdateEntryRequest {
+    /**
+     * The value to set the new entry. If the input value exceeds the maximum value supported by int64, which is 9,223,372,036,854,775,807, the request fails with a 400 Bad Request error.
+     */
+    value: number
+}
+
 export interface ListEntriesParams {
     /** The range of qualifying values of entries to return. */
     filter?: string,
@@ -25,3 +45,9 @@ export interface ListEntriesParams {
     page_token?: string
 }
 
+export interface UpdateDatastoreEntryParams {
+    /**
+     * The flag to allow the creation of an entry if the entry doesn't exist. See [Allow Missing Flags](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#allow-missing-flags).
+     */
+    allow_missing?: boolean
+}
