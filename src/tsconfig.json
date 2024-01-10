@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "allowSyntheticDefaultImports": true,
+        "alwaysStrict": true,
+        "declaration": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "rootDir": "./",
+        "outDir": "../dist"
+    },
+    "tsc-alias": {
+        "resolveFullPaths": true
+    },
+    "include": ["."]
+}
