@@ -30,7 +30,7 @@ class DatastoreEntry<T> {
         const response = await fetch(this.context.url, {
             method: "POST",
             headers: {
-                'x-api-key': this.context.key,
+                'x-api-key': this.context.apiKey,
                 'content-md5': hash,
                 'content-type': 'application/json',
                 'roblox-entry-userids': JSON.stringify(this.context.userIds),
@@ -54,7 +54,7 @@ class DatastoreEntry<T> {
     public async delete() {
         const response = await fetch(this.context.url, {
             method: "DELETE",
-            headers: { 'x-api-key': this.context.key }
+            headers: { 'x-api-key': this.context.apiKey }
         });
 
         if (!response.ok) {
@@ -76,7 +76,7 @@ class DatastoreEntry<T> {
 
         if (optionalParams) addParams(url, optionalParams);
 
-        const response = await fetch(url, { headers: { 'x-api-key': this.context.key } });
+        const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
             return null;
         }
@@ -95,7 +95,7 @@ class DatastoreEntry<T> {
         
         if (optionalParams) addParams(url, optionalParams);
 
-        const response = await fetch(url, { headers: { 'x-api-key': this.context.key } });
+        const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
             console.log(`${response.status} - Unable to fetch entry versions.`);
             return null;
@@ -108,7 +108,7 @@ class DatastoreEntry<T> {
 
 export class StandardDataStore {
     /** Your Open Cloud API key. */
-    public readonly key: string;
+    public readonly apiKey: string;
     /** The Universe ID that you want to manage datastores for. */
     public readonly universeId: number;
 
@@ -117,7 +117,7 @@ export class StandardDataStore {
      * @param universeId The Universe ID that you want to manage datastores for.
      */
     constructor(key: string, universeId: number) {
-        this.key = key;
+        this.apiKey = key;
         this.universeId = universeId;
     }
 
@@ -131,9 +131,9 @@ export class StandardDataStore {
 
         if (optionalParams) addParams(url, optionalParams);
 
-        const response = await fetch(url, { headers: { 'x-api-key': this.key } });
+        const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
         if (!response.ok) {
-            console.log(`Unable to list data stores for ${this.universeId} with status code ${response.status}.`);
+            console.log(`${response.status} - Unable to list data stores for ${this.universeId}.`);
             return null;
         }
 
@@ -153,7 +153,7 @@ export class StandardDataStore {
 
         if (optionalParams) addParams(url, optionalParams);
 
-        const response = await fetch(url, { headers: { 'x-api-key': this.key } });
+        const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
         const json: ListEntries = await response.json();
         
         return json;
@@ -173,14 +173,14 @@ export class StandardDataStore {
         
         if (optionalParams) addParams(url, optionalParams);
 
-        const response = await fetch(url, { headers: { 'x-api-key': this.key } });
+        const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
         switch (response.status) {
             case 200:
                 const json: T = await response.json();
                 const context = {
                     url: new URL(url.href),
                     base: baseApiUrl,
-                    key: this.key,
+                    apiKey: this.apiKey,
                     attributes: JSON.parse(response.headers.get('roblox-entry-attributes')),
                     userIds: JSON.parse(response.headers.get('roblox-entry-userids'))
                 }

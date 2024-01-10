@@ -12,7 +12,7 @@ export interface Datastore {
 export interface DatastoreContext {
     url: URL,
     base: URL,
-    key: string,
+    apiKey: string,
     attributes: object,
     userIds: number[]
 }
