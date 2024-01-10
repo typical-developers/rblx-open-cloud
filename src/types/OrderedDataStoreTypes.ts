@@ -1,4 +1,11 @@
-import { Entry } from "./default";
+export interface Entry {
+    /** The resource path of the request. */
+    path: string,
+    /** The name of the entry. */
+    id: string,
+    /** The value of the entry. */
+    value: number
+}
 
 export interface ListEntries {
     /** The Entries from the specified Scope. */
@@ -7,7 +14,7 @@ export interface ListEntries {
     nextPageCursor: string
 }
 
-export interface ListOptionalParams {
+export interface ListEntriesParams {
     /** The range of qualifying values of entries to return. */
     filter?: string,
     /** The enumeration direction. The order by default is ascending. Input a desc suffix for descending. */

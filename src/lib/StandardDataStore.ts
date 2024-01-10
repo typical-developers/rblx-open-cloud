@@ -1,6 +1,5 @@
-import { DeepPartial } from '../types/global';
-import { DatastoreContext, EntryVersionParams, EntryVersionsParams, GetEntryParams } from '../types/standard-datastores/entrty';
-import { ListDatastores, ListDatastoresParams, ListEntryKeys, ListEntryVersion, ListEntryKeysParams } from '../types/standard-datastores/list';
+import { DatastoreContext, EntryVersionParams, EntryVersionsParams, ListEntryVersions, ListDatastoresParams, ListDatastores, ListEntriesParams, ListEntries, GetEntryParams } from "../types/StandardDataStoreTypes";
+import { DeepPartial } from "../types/global";
 import { baseApiUrl } from "../util/constants";
 import { addParams } from '../util/params';
 import { deepReplace } from "../util/replace";
@@ -8,7 +7,7 @@ import { createHash } from 'crypto';
 
 class DatastoreEntry<T> {
     public readonly datastore: T;
-    protected readonly context: DatastoreContext;
+    public readonly context: DatastoreContext;
 
     /**
      * @param context Context passed through when the datastore was requested
@@ -102,7 +101,7 @@ class DatastoreEntry<T> {
             return null;
         }
 
-        const json: ListEntryVersion = await response.json();
+        const json: ListEntryVersions = await response.json();
         return json;
     }
 }
@@ -147,7 +146,7 @@ export class StandardDataStore {
      * @link https://create.roblox.com/docs/reference/cloud/datastores-api/v1#GET-v1-universes-_universeId_-standard-datastores-datastore-entries
      * @param optionalParams
      */
-    public async listEntries(datastoreName: string, optionalParams?: ListEntryKeysParams) {
+    public async listEntries(datastoreName: string, optionalParams?: ListEntriesParams) {
         const url = new URL(`/datastores/v1/universes/${this.universeId}/standard-datastores/datastore/entries`, baseApiUrl);
 
         url.searchParams.set('datastoreName', datastoreName);
@@ -155,7 +154,7 @@ export class StandardDataStore {
         if (optionalParams) addParams(url, optionalParams);
 
         const response = await fetch(url, { headers: { 'x-api-key': this.key } });
-        const json: ListEntryKeys = await response.json();
+        const json: ListEntries = await response.json();
         
         return json;
     }

@@ -1,9 +1,7 @@
 import { baseApiUrl } from "../util/constants";
 
 export class MessagingService {
-    /** Your Open Cloud API key. */
     readonly apiKey: string;
-    /** The Universe ID that you want to send messages to. */
     readonly universeId: number;
 
     /**

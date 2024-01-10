@@ -1,11 +1,9 @@
-import { ListOptionalParams, ListEntries } from "../types/ordered-datastores/list";
+import { ListEntries, ListEntriesParams } from "../types/OrderedDataStoreTypes";
 import { baseApiUrl } from "../util/constants";
 import { addParams } from "../util/params";
 
 export class OrderedDataStore {
-    /** Your Open Cloud API key. */
     readonly apiKey: string;
-    /** The Universe ID that you want to manage datastores for. */
     readonly universeId: number;
 
     /**
@@ -24,7 +22,7 @@ export class OrderedDataStore {
      * @param scope The range of qualifying values of entries to return.
      * @param optionalParams Optional params the endpoint will accept.
      */
-    public async list(orderedDataStore: string, scope: string, optionalParams?: ListOptionalParams) {
+    public async list(orderedDataStore: string, scope: string, optionalParams?: ListEntriesParams) {
         const url = new URL(`/ordered-data-stores/v1/universes/${this.universeId}/orderedDataStores/${orderedDataStore}/scopes/${scope}/entries`, baseApiUrl);
         if (optionalParams) addParams(url, optionalParams);
 
