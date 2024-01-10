@@ -6,6 +6,7 @@ import { deepReplace } from "../util/replace";
 import { createHash } from 'crypto';
 
 class DatastoreEntry<T> {
+    private deleted: boolean = false;
     public readonly datastore: T;
     public readonly context: DatastoreContext;
 
@@ -23,9 +24,14 @@ class DatastoreEntry<T> {
      * @link https://create.roblox.com/docs/reference/cloud/datastores-api/v1#POST-v1-universes-_universeId_-standard-datastores-datastore-entries-entry
      * @param newData New data to replace current data with. Will automatically replace new data.
      */
-    public async set(newData: DeepPartial<T>) {
+    public async set(newData: DeepPartial<T>): Promise<DatastoreEntry<T> | undefined> {
         const data = deepReplace<T>(this.datastore, newData);
         const hash = createHash('md5').update(JSON.stringify(data)).digest('base64');
+
+        if (this.deleted) {
+            console.log('You cannot set data for a deleted entry.');
+            return undefined;
+        }
 
         const response = await fetch(this.context.url, {
             method: "POST",
@@ -69,12 +75,17 @@ class DatastoreEntry<T> {
      * @link https://create.roblox.com/docs/reference/cloud/datastores-api/v1#GET-v1-universes-_universeId_-standard-datastores-datastore-entries-entry-versions-version
      * @param versionId The version to inspect.
      */
-    public async version(versionId: string, optionalParams?: EntryVersionParams) {
+    public async version(versionId: string, optionalParams?: EntryVersionParams): Promise<DatastoreEntry<T> | undefined> {
         const url = new URL(`${this.context.url.pathname}/versions/version${this.context.url.search}`, this.context.base);
 
         url.searchParams.set('versionId', versionId);
 
         if (optionalParams) addParams(url, optionalParams);
+
+        if (this.deleted) {
+            console.log('You cannot get a version for a deleted entry.');
+            return undefined;
+        }
 
         const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
@@ -94,6 +105,11 @@ class DatastoreEntry<T> {
         const url = new URL(`${this.context.url.pathname}/versions${this.context.url.search}`, this.context.base);
         
         if (optionalParams) addParams(url, optionalParams);
+
+        if (this.deleted) {
+            console.log('You cannot get versions for a deleted entry.');
+            return undefined;
+        }
 
         const response = await fetch(url, { headers: { 'x-api-key': this.context.apiKey } });
         if (!response.ok) {
@@ -165,7 +181,7 @@ export class StandardDataStore {
      * @param datastoreName The name of the data store.
      * @param optionalParams Optional params the endpoint will accept.
      */
-    public async getEntry<T>(datastoreName: string, entryKey: string, optionalParams?: GetEntryParams) {
+    public async getEntry<T>(datastoreName: string, entryKey: string, optionalParams?: GetEntryParams): Promise<DatastoreEntry<T> | undefined> {
         const url = new URL(`/datastores/v1/universes/${this.universeId}/standard-datastores/datastore/entries/entry`, baseApiUrl);
         
         url.searchParams.set('datastoreName', datastoreName);

@@ -3,7 +3,7 @@ import { baseApiUrl } from "../util/constants";
 import { addParams } from "../util/params";
 
 class OrderedDataStoreEntry {
-    public deleted: boolean = false;
+    private deleted: boolean = false;
     public readonly datastore: Entry;
     public readonly context: OrderedDataStoreContext;
 
@@ -37,7 +37,7 @@ class OrderedDataStoreEntry {
      * @param request Updates the entry provided with a new value.
      * @param optionalParams Optional params the endpoint will accept.
      */
-    public async update(request: UpdateEntryRequest, optionalParams?: UpdateDatastoreEntryParams) {
+    public async update(request: UpdateEntryRequest, optionalParams?: UpdateDatastoreEntryParams): Promise<OrderedDataStoreEntry | undefined> {
         const url = new URL(`${this.context.url.pathname}`, this.context.base);
 
         if (optionalParams) addParams(url, optionalParams);
@@ -105,7 +105,7 @@ export class OrderedDataStore {
      * @param id The name of the entry.
      * @param request Creates a new entry with the value provided.
      */
-    public async createEntry(orderedDataStore: string, scope: string, id: string, request: CreateEntryRequest) {
+    public async createEntry(orderedDataStore: string, scope: string, id: string, request: CreateEntryRequest): Promise<OrderedDataStoreEntry | undefined> {
         const url = new URL(`/ordered-data-stores/v1/universes/${this.universeId}/orderedDataStores/${orderedDataStore}/scopes/${scope}/entries`, baseApiUrl);
 
         url.searchParams.set('id', id);
@@ -141,7 +141,7 @@ export class OrderedDataStore {
      * @param scope The name of the data store scope. See [Scopes](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#scopes).
      * @param entry The entry ID.
      */
-    public async getEntry(orderedDataStore: string, scope: string, entry: string) {
+    public async getEntry(orderedDataStore: string, scope: string, entry: string): Promise<OrderedDataStoreEntry | undefined> {
         const url = new URL(`/ordered-data-stores/v1/universes/${this.universeId}/orderedDataStores/${orderedDataStore}/scopes/${scope}/entries/${entry}`, baseApiUrl);
 
         const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
