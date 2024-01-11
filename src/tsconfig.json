@@ -7,7 +7,9 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "rootDir": "./",
-        "outDir": "../dist"
+        "outDir": "../dist",
+        "noUnusedParameters": true,
+        "noUnusedLocals": true
     },
     "tsc-alias": {
         "resolveFullPaths": true

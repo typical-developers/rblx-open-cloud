@@ -1,3 +1,3 @@
-export * from './lib/StandardDataStore';
-export * from './lib/OrderedDataStore';
-export * from './lib/MessagingService';
+export * from './lib/structures/StandardDataStores/StandardDataStore';
+export * from './lib/structures/OrderedDataStores/OrderedDataStore';
+export * from './lib/structures/MessagingService';

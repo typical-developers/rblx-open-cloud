@@ -6,12 +6,14 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "format": "prettier --config .prettierrc.json ./src/**/*.ts --write",
     "build": "tsc -build ./src/tsconfig.json && tsc-alias --project ./src/tsconfig.json"
   },
   "author": "LuckFire",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^20.10.7",
+    "prettier": "^3.1.1",
     "tsc-alias": "^1.8.8",
     "typescript": "^5.3.3"
   }

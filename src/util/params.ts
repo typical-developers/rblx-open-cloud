@@ -1,5 +1,4 @@
 /**
- * 
  * @param url The URL you want to add params to.
  * @param params The params you want to add to the URL.
  */

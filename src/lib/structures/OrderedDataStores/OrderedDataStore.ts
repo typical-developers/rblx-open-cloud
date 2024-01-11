@@ -1,75 +1,11 @@
-import { CreateEntryRequest, Entry, ListEntries, ListEntriesParams, OrderedDataStoreContext, UpdateDatastoreEntryParams, UpdateEntryRequest } from "../types/OrderedDataStoreTypes";
-import { baseApiUrl } from "../util/constants";
-import { addParams } from "../util/params";
-
-class OrderedDataStoreEntry {
-    private deleted: boolean = false;
-    public readonly datastore: Entry;
-    public readonly context: OrderedDataStoreContext;
-
-    constructor(context: OrderedDataStoreContext, data: Entry) {
-        this.context = context;
-        this.datastore = data;
-    }
-
-    /**
-     * Deletes the specified entry.
-     * @link https://create.roblox.com/docs/reference/cloud/datastores-api/ordered-v1#DELETE-v1-universes-_universeId_-orderedDataStores-_orderedDataStore_-scopes-_scope_-entries-_entry_
-     * @returns Whether or not the entry was successfully deleted.
-     */
-    public async delete() {
-        const response = await fetch(this.context.url, {
-            method: "DELETE",
-            headers: { 'x-api-key': this.context.apiKey }
-        });
-
-        if (!response.ok) {
-            return false;
-        }
-
-        this.deleted = true;
-        return true;
-    }
-
-    /**
-     * Updates an entry value and returns the updated entry.
-     * @link https://create.roblox.com/docs/reference/cloud/datastores-api/ordered-v1#PATCH-v1-universes-_universeId_-orderedDataStores-_orderedDataStore_-scopes-_scope_-entries-_entry_
-     * @param request Updates the entry provided with a new value.
-     * @param optionalParams Optional params the endpoint will accept.
-     */
-    public async update(request: UpdateEntryRequest, optionalParams?: UpdateDatastoreEntryParams): Promise<OrderedDataStoreEntry | undefined> {
-        const url = new URL(`${this.context.url.pathname}`, this.context.base);
-
-        if (optionalParams) addParams(url, optionalParams);
-
-        if (this.deleted) {
-            console.log('You cannot update entries that have been deleted.');
-            return this;
-        }
-
-        const response = await fetch(this.context.url, {
-            method: "PATCH",
-            headers: {
-                'x-api-key': this.context.apiKey,
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(request)
-        });
-
-        if (!response.ok) {
-            console.log(`${response.status} - Unable to create a new ordered datastore entry.`);
-            return undefined;
-        }
-
-        const json: Entry = await response.json();
-
-        return new OrderedDataStoreEntry(this.context, json);
-    }
-}
+import { OrderedDataStoreEntry } from './OrderedDataStoreEntry';
+import { CreateEntryRequest, Entry, ListEntries, ListEntriesParams } from '../../../types/OrderedDataStoreTypes';
+import { baseApiUrl } from '../../../util/constants';
+import { addParams } from '../../../util/params';
 
 export class OrderedDataStore {
-    readonly apiKey: string;
-    readonly universeId: number;
+    public readonly apiKey: string;
+    public readonly universeId: number;
 
     /**
      * @param key Your Open Cloud API key.
@@ -87,14 +23,17 @@ export class OrderedDataStore {
      * @param optionalParams Optional params the endpoint will accept.
      * @param scope The range of qualifying values of entries to return. Default is `global`
      */
-    public async listEntries(orderedDataStore: string, optionalParams?: ListEntriesParams, scope: string = "global") {
+    public async listEntries(orderedDataStore: string, optionalParams?: ListEntriesParams, scope: string = 'global') {
         const url = new URL(`/ordered-data-stores/v1/universes/${this.universeId}/orderedDataStores/${orderedDataStore}/scopes/${scope}/entries`, baseApiUrl);
         if (optionalParams) addParams(url, optionalParams);
 
         const response = await fetch(url, { headers: { 'x-api-key': this.apiKey } });
         const json: ListEntries = await response.json();
-        
-        return json;
+
+        return {
+            entries: json.entries.map((entry) => new OrderedDataStoreEntry({ url: url, apiKey: this.apiKey }, entry)),
+            nextPageToken: json.nextPageToken
+        };
     }
 
     /**
@@ -111,7 +50,7 @@ export class OrderedDataStore {
         url.searchParams.set('id', id);
 
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'x-api-key': this.apiKey,
                 'content-type': 'application/json'
@@ -127,7 +66,6 @@ export class OrderedDataStore {
         const json: Entry = await response.json();
         const context = {
             url: url,
-            base: baseApiUrl,
             apiKey: this.apiKey
         };
 
@@ -152,12 +90,13 @@ export class OrderedDataStore {
         }
 
         const json: Entry = await response.json();
-        const context = {
-            url: url,
-            base: baseApiUrl,
-            apiKey: this.apiKey
-        };
 
-        return new OrderedDataStoreEntry(context, json);
+        return new OrderedDataStoreEntry(
+            {
+                url: url,
+                apiKey: this.apiKey
+            },
+            json
+        );
     }
 }

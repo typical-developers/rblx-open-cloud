@@ -1,160 +1,159 @@
+export interface DatastoreContext {
+    url: URL;
+    apiKey: string;
+    attributes: object;
+    userIds: number[];
+}
+
 export interface Datastore {
-    /** 
+    /**
      * The name of your data store.
      */
-    name: string,
+    name: string;
     /**
      *  The timestamp of when the data store was created in the ISO time format.
      */
-    createdTime: string
-}
-
-export interface DatastoreContext {
-    url: URL,
-    base: URL,
-    apiKey: string,
-    attributes: object,
-    userIds: number[]
+    createdTime: string;
 }
 
 export interface EntryVersion {
     /**
      *  The version name of the qualifying entry.
      */
-    version: string,
+    version: string;
     /**
      *  Indicates whether the entry has been deleted.
      */
-    deleted: boolean,
+    deleted: boolean;
     /**
      *  The length of the content.
      */
-    contentLength: number,
-    /** 
+    contentLength: number;
+    /**
      * The timestamp of when the version was created in the ISO time format.
      */
-    createdTime: string,
-    /** 
+    createdTime: string;
+    /**
      * The timestamp of when the data store was created in the ISO time format.
      */
-    objectCreatedTime: string
+    objectCreatedTime: string;
 }
 
 export interface EntryKey {
     /**
      * If allScope is provided, this will be returned.
      */
-    scope?: string
+    scope?: string;
     /**
      * The key for the entry.
      */
-    key: string
+    key: string;
 }
 
 export interface ListDatastores {
     /**
      * An array of data stores in the target experience.
      */
-    datastores: Datastore[],
+    datastores: Datastore[];
     /**
      * Indicates that there is more data available in the requested result set. See [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors).
      */
-    nextPageCursor: string
+    nextPageCursor: string;
 }
 
 export interface ListEntries {
     /**
      * An array of entry keys within the target data store.
      */
-    keys: EntryKey[],
+    keys: EntryKey[];
     /**
      * Indicates that there is more data available in the requested result set. See [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors).
      */
-    nextPageCursor: string
+    nextPageCursor: string;
 }
 
 export interface ListEntryVersions {
     /**
      * An array of entry versions for the target data store in the target experience.
      */
-    versions: EntryVersion[],
+    versions: EntryVersion[];
     /**
      * Indicates that there is more data available in the requested result set. See [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors).
      */
-    nextPageCursor: string
+    nextPageCursor: string;
 }
 
 export interface ListDatastoresParams {
     /**
      * Provide to request the next set of data. See [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors).
      */
-    cursor?: string,
+    cursor?: string;
     /**
      * The maximum number of items to return. Each call only reads one partition so it can return fewer than the given value when running out of objectives on one partition.
      */
-    limit?: number,
+    limit?: number;
     /**
      * Provide to return only data stores with this prefix.
      */
-    prefix?: string
+    prefix?: string;
 }
 
 export interface ListEntriesParams {
     /**
      * The value is `global` by default. See [Scopes](https://create.roblox.com/docs/cloud-services/datastores#scopes).
      */
-    scope?: string,
+    scope?: string;
     /**
      * Set to true to return keys from all scopes.
      */
-    allScopes?: boolean,
+    allScopes?: boolean;
     /**
      * Provide to return only keys with this prefix.
      */
-    prefix?: string,
+    prefix?: string;
     /**
      * Provide to request the next set of data. See [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors).
      */
-    cursor?: string,
+    cursor?: string;
     /**
      * The maximum number of items to return. Each call only reads one partition so it can return fewer than the given value when running out of objectives on one partition.
      */
-    limit?: number
+    limit?: number;
 }
 
 export interface GetEntryParams {
     /**
      * The value is `global` by default. See (Scopes)[https://create.roblox.com/docs/cloud-services/datastores#scopes].
      */
-    scope?: string
+    scope?: string;
 }
 
 export interface EntryVersionParams {
     /**
      * The value is `global` by default. See (Scopes)[https://create.roblox.com/docs/cloud-services/datastores#scopes].
      */
-    scope?: string
+    scope?: string;
 }
 
 export interface EntryVersionsParams {
     /**
      * Provide to request the next set of data (see [Cursors](https://create.roblox.com/docs/cloud/open-cloud/data-store-api-handling#cursors)).
      */
-    cursor?: string,
+    cursor?: string;
     /**
      * Provide to not include versions earlier than this timestamp.
      */
-    startTime?: string,
+    startTime?: string;
     /**
      * Provide to not include versions later than this timestamp.
      */
-    endTime?: string,
+    endTime?: string;
     /**
      * Either `Ascending` (earlier versions first) or `Descending` (later versions first).
      */
-    sortOrder?: "Ascending" | "Descending",
+    sortOrder?: 'Ascending' | 'Descending';
     /**
      * The maximum number of items to return. Each call only reads one partition so it can return fewer than the given value when running out of objectives on one partition.
      */
-    limit?: number
+    limit?: number;
 }

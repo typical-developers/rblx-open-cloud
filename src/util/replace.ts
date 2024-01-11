@@ -1,4 +1,4 @@
-import { DeepPartial } from "../types/global";
+import { DeepPartial } from '../types/global';
 
 /**
  * @param data The complete data

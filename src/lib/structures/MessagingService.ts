@@ -1,4 +1,4 @@
-import { baseApiUrl } from "../util/constants";
+import { baseApiUrl } from '../../util/constants';
 
 export class MessagingService {
     readonly apiKey: string;
@@ -6,7 +6,7 @@ export class MessagingService {
 
     /**
      * @param key Your Open Cloud API key.
-     * @param universeId The Universe ID that you want to manage datastores for.
+     * @param universeId The Universe ID that you want to use messaging service for.
      */
     constructor(key: string, universeId: number) {
         this.apiKey = key;
@@ -24,10 +24,10 @@ export class MessagingService {
         const url = new URL(`/v1/universes/${this.universeId}/topics/${topic}`, baseApiUrl);
 
         const response = await fetch(url, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'content-type': 'application/json',
-				'x-api-key': this.apiKey
+                'x-api-key': this.apiKey
             },
             body: JSON.stringify({ message })
         });
