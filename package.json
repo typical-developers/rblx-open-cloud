@@ -6,6 +6,14 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typical-developers/rblx-open-cloud.git"
+  },
+  "keywords": [
+    "roblox",
+    "typescript"
+  ],
   "scripts": {
     "format": "prettier --config .prettierrc.json ./src/**/*.ts --write",
     "build": "tsc -build ./src/tsconfig.json && tsc-alias --project ./src/tsconfig.json"
