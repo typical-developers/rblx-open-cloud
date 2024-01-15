@@ -1,5 +1,6 @@
 {
-  "name": "rblx-open-cloud",
+  "name": "@typical-developers/rblx-open-cloud",
+  "author": "@typical-developers",
   "version": "2.0.0",
   "description": "",
   "type": "module",
@@ -9,7 +10,6 @@
     "format": "prettier --config .prettierrc.json ./src/**/*.ts --write",
     "build": "tsc -build ./src/tsconfig.json && tsc-alias --project ./src/tsconfig.json"
   },
-  "author": "LuckFire",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/node": "^20.10.7",
