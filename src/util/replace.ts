@@ -4,7 +4,7 @@ import { DeepPartial } from '../types/global';
  * @param data The complete data
  * @param newData New data that you want to append or overwrite.
  */
-export function deepReplace<T>(data: T, newData: DeepPartial<T>) {
+export function deepReplace<T = object>(data: T, newData: DeepPartial<T>) {
     const newKeys = Object.keys(newData);
 
     for (const key of newKeys) {
