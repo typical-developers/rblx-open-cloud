@@ -1,3 +1,6 @@
+> [!CAUTION]
+> This package has been moved to `@roblox-open-cloud/datastores`. This version will no longer be maintained.
+
 # Roblox Open Cloud
 A class based package for Roblox's Open Cloud API. Documentation coming in the future (hopefully)!
 Some class names and methods are inspired by Roblox's Lua implementation (tho it's not exactly 1:1).
